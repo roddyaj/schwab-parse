@@ -62,23 +62,23 @@ final class Utils
 //	{
 //		return "Yes".equals(value);
 //	}
-//
-//	public static Integer parseInt(String value)
-//	{
-//		Integer intValue = null;
-//		if (isPresent(value))
-//		{
-//			try
-//			{
-//				intValue = Integer.parseInt(sanitize(value));
-//			}
-//			catch (NumberFormatException e)
-//			{
-//				System.out.println("parseInt " + e);
-//			}
-//		}
-//		return intValue;
-//	}
+
+	public static Integer parseInt(String value)
+	{
+		Integer intValue = null;
+		if (isPresent(value))
+		{
+			try
+			{
+				intValue = Integer.parseInt(sanitize(value));
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.println("parseInt " + e);
+			}
+		}
+		return intValue;
+	}
 
 	public static Double parseDouble(String value)
 	{
