@@ -6,6 +6,6 @@ set -x
 
 mvn clean
 rm -r $INSTALL
-mvn package
+mvn install
 mvn dependency:copy-dependencies -DincludeScope=runtime -DoutputDirectory=$INSTALL
 cp target/*.jar $INSTALL
