@@ -58,10 +58,10 @@ final class Utils
 		return records;
 	}
 
-//	public static boolean parseBoolean(String value)
-//	{
-//		return "Yes".equals(value);
-//	}
+	public static boolean parseBoolean(String value)
+	{
+		return "Yes".equals(value);
+	}
 
 	public static Integer parseInt(String value)
 	{
@@ -118,20 +118,6 @@ final class Utils
 		}
 		return date;
 	}
-
-//	public static Option parseOptionText(String optionText)
-//	{
-//		if (optionText.indexOf(' ') != -1)
-//		{
-//			String[] tokens = optionText.split(" ");
-//			String symbol = tokens[0];
-//			LocalDate expiryDate = parseDate(tokens[1]);
-//			double strike = Double.parseDouble(tokens[2]);
-//			char type = tokens[3].charAt(0);
-//			return new Option(symbol, expiryDate, strike, type);
-//		}
-//		return null;
-//	}
 
 	private static boolean isPresent(String value)
 	{
