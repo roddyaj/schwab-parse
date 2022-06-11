@@ -119,6 +119,11 @@ final class Utils
 		return date;
 	}
 
+	public static String getOrNull(CSVRecord record, String fieldName)
+	{
+		return record.isSet(fieldName) ? record.get(fieldName) : null;
+	}
+
 	private static boolean isPresent(String value)
 	{
 		return !(value == null || value.isBlank() || "--".equals(value) || "N/A".equals(value));

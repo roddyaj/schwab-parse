@@ -46,9 +46,9 @@ public record SchwabPosition(
 			Utils.parseDouble(record.get("Market Value")),
 			Utils.parseDouble(record.get("Day Change $")),
 			Utils.parseDouble(record.get("Day Change %")),
-			record.isSet("Cost Basis") ? Utils.parseDouble(record.get("Cost Basis")) : null,
-			record.isSet("Gain/Loss $") ? Utils.parseDouble(record.get("Gain/Loss $")) : null,
-			record.isSet("Gain/Loss %") ? Utils.parseDouble(record.get("Gain/Loss %")) : null,
+			Utils.parseDouble(Utils.getOrNull(record, "Cost Basis")),
+			Utils.parseDouble(Utils.getOrNull(record, "Gain/Loss $")),
+			Utils.parseDouble(Utils.getOrNull(record, "Gain/Loss %")),
 			Utils.parseBoolean(record.get("Reinvest Dividends?")),
 			Utils.parseBoolean(record.get("Capital Gains?")),
 			Utils.parseDouble(record.get("% Of Account")),
@@ -59,9 +59,9 @@ public record SchwabPosition(
 			Utils.parseDouble(record.get("52 Week Low")),
 			Utils.parseDouble(record.get("52 Week High")),
 			Utils.parseInt(record.get("Volume")),
-			record.isSet("Intrinsic Value") ? Utils.parseDouble(record.get("Intrinsic Value")) : null,
-			record.isSet("In The Money") ? Utils.parseString(record.get("In The Money")) : null,
-			record.isSet("Security Type") ? record.get("Security Type") : null);
+			Utils.parseDouble(Utils.getOrNull(record, "Intrinsic Value")),
+			Utils.parseString(Utils.getOrNull(record, "In The Money")),
+			Utils.getOrNull(record, "Security Type"));
 		// @formatter:on
 	}
 
