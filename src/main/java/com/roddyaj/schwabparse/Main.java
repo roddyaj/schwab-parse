@@ -14,9 +14,9 @@ public final class Main
 		Path file = Path.of(args[0]);
 //		for (SchwabTransaction transaction : new SchwabTransactionsFile(file).getTransactions())
 //			System.out.println(transaction);
-//		for (SchwabOpenOrder order : new SchwabOpenOrdersFile(file).getOpenOrders())
-//			System.out.println(order);
-		for (SchwabPosition position : new SchwabPositionsFile(file).getPositions())
-			System.out.println(position);
+		for (SchwabOrder order : new SchwabOrdersFile(file).getOrders())
+			System.out.println(order);
+//		for (SchwabPosition position : new SchwabPositionsFile(file).getPositions())
+//			System.out.println(position);
 	}
 }

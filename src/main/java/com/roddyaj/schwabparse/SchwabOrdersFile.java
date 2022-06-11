@@ -7,15 +7,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-public class SchwabOpenOrdersFile
+public class SchwabOrdersFile
 {
 	private final Path file;
 
 	private final LocalDateTime time;
 
-	private List<SchwabOpenOrder> openOrders;
+	private List<SchwabOrder> orders;
 
-	public SchwabOpenOrdersFile(Path file)
+	public SchwabOrdersFile(Path file)
 	{
 		this.file = file;
 		this.time = getTime(file);
@@ -26,9 +26,9 @@ public class SchwabOpenOrdersFile
 		return time;
 	}
 
-	public synchronized List<SchwabOpenOrder> getOpenOrders()
+	public synchronized List<SchwabOrder> getOrders()
 	{
-		if (openOrders == null)
+		if (orders == null)
 		{
 			try
 			{
@@ -36,14 +36,19 @@ public class SchwabOpenOrdersFile
 				List<String> lines = Files.lines(file).filter(line -> !line.isEmpty()).map(line -> line.replace("\" Shares", " Shares\"")
 					.replace("\" Share", " Share\"").replace("\" Contracts", " Contracts\"").replace("\" Contract", " Contract\"")).toList();
 
-				openOrders = Utils.readCsv(lines).stream().map(SchwabOpenOrder::new).toList();
+				orders = Utils.readCsv(lines).stream().map(SchwabOrder::new).toList();
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		return openOrders;
+		return orders;
+	}
+
+	public List<SchwabOrder> getOpenOrders()
+	{
+		return getOrders().stream().filter(o -> "OPEN".equals(o.status())).toList();
 	}
 
 	public static LocalDateTime getTime(Path file)

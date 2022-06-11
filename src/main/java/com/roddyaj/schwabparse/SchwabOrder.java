@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.csv.CSVRecord;
 
-public record SchwabOpenOrder(
+public record SchwabOrder(
 	String symbol,
 	String nameOfSecurity,
 	String action,
@@ -20,7 +20,7 @@ public record SchwabOpenOrder(
 {
 	private static final DateTimeFormatter TIME_AND_DATE_FORMAT = DateTimeFormatter.ofPattern("h:mm a MM/dd/yyyy");
 
-	public SchwabOpenOrder(CSVRecord record)
+	public SchwabOrder(CSVRecord record)
 	{
 		// @formatter:off
 		this(
