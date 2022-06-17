@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class SchwabTransactionsFile
 {
-	private static final Pattern FILE_PATTERN = Pattern.compile("(.+?)_Transactions_([-\\d]+).CSV");
+	private static final Pattern FILE_PATTERN = Pattern.compile("(.+?)_Transactions_([-\\d]+).csv");
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
 
