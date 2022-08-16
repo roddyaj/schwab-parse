@@ -6,42 +6,27 @@ import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class SchwabPositionsFile
+public class SchwabPositionsReader
 {
 	private static final Pattern DATE_PATTERN = Pattern.compile("as of (.+?)\"");
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("hh:mm a v, MM/dd/yyy");
 
-	private final Path file;
-
-	private final ZonedDateTime time;
-
-	private List<SchwabPosition> positions;
-
-	public SchwabPositionsFile(Path file)
+	public SchwabPositionsData read(Path file)
 	{
-		this.file = file;
-		this.time = getTime(file);
-	}
-
-	public ZonedDateTime getTime()
-	{
-		return time;
-	}
-
-	public synchronized List<SchwabPosition> getPositions()
-	{
-		if (positions == null)
-			positions = Utils.readCsv(file, 2).stream().map(SchwabPosition::new).toList();
-		return positions;
-	}
-
-	public String toCsvString()
-	{
-		return getPositions().stream().map(SchwabPosition::toCsvString).collect(Collectors.joining("\n"));
+		Map<Boolean, List<SchwabPosition>> map = Utils.readCsv(file, 2).stream().map(SchwabPosition::new)
+			.collect(Collectors.partitioningBy(p -> p.quantity() == null));
+		List<SchwabPosition> positions = map.get(false);
+		List<SchwabPosition> otherPositions = map.get(true);
+		SchwabPosition balancePosition = otherPositions.stream().filter(p -> p.symbol().contains("Account Total")).findAny().orElse(null);
+		double balance = balancePosition != null ? balancePosition.marketValue() : 0;
+		SchwabPosition cashPosition = otherPositions.stream().filter(p -> p.symbol().contains("Cash")).findAny().orElse(null);
+		double cash = cashPosition != null ? cashPosition.marketValue() : 0;
+		return new SchwabPositionsData(getTime(file), positions, balance, cash);
 	}
 
 	public static ZonedDateTime getTime(Path file)

@@ -12,11 +12,11 @@ public final class Main
 	public void run(String[] args)
 	{
 		Path file = Path.of(args[0]);
-//		for (SchwabTransaction transaction : new SchwabTransactionsFile(file).getTransactions())
+//		for (SchwabTransaction transaction : new SchwabTransactionsReader().read(file).transactions())
 //			System.out.println(transaction);
-		for (SchwabOrder order : new SchwabOrdersFile(file).getOrders())
-			System.out.println(order);
-//		for (SchwabPosition position : new SchwabPositionsFile(file).getPositions())
-//			System.out.println(position);
+//		for (SchwabOrder order : new SchwabOrdersReader().read(file).orders())
+//			System.out.println(order);
+		for (SchwabPosition position : new SchwabPositionsReader().read(file).positions())
+			System.out.println(position);
 	}
 }
