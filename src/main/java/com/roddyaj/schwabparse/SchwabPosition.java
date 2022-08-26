@@ -65,6 +65,11 @@ public record SchwabPosition(
 		// @formatter:on
 	}
 
+	public boolean isOption()
+	{
+		return symbol.indexOf(' ') != -1;
+	}
+
 	public String toCsvString()
 	{
 		return Arrays
