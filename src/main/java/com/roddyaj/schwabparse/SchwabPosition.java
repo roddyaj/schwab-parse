@@ -31,7 +31,8 @@ public record SchwabPosition(
 	Integer volume,
 	Double intrinsicValue,
 	String inTheMoney,
-	String securityType)
+	String securityType,
+	SchwabOption option)
 {
 	public SchwabPosition(CSVRecord record)
 	{
@@ -61,13 +62,19 @@ public record SchwabPosition(
 			Utils.parseInt(record.get("Volume")),
 			Utils.parseDouble(Utils.getOrNull(record, "Intrinsic Value")),
 			Utils.parseString(Utils.getOrNull(record, "In The Money")),
-			Utils.getOrNull(record, "Security Type"));
+			Utils.getOrNull(record, "Security Type"),
+			SchwabOption.parse(record.get("Symbol")));
 		// @formatter:on
 	}
 
 	public boolean isOption()
 	{
-		return symbol.indexOf(' ') != -1;
+		return option != null;
+	}
+
+	public String getActualSymbol()
+	{
+		return isOption() ? option.symbol() : symbol;
 	}
 
 	public String toCsvString()

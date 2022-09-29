@@ -12,7 +12,8 @@ public record SchwabTransaction(
 	Double quantity,
 	Double price,
 	Double feesAndComm,
-	Double amount)
+	Double amount,
+	SchwabOption option)
 {
 	public SchwabTransaction(CSVRecord record)
 	{
@@ -25,7 +26,18 @@ public record SchwabTransaction(
 			Utils.parseDouble(record.get("Quantity")),
 			Utils.parseDouble(record.get("Price")),
 			Utils.parseDouble(record.get("Fees & Comm")),
-			Utils.parseDouble(record.get("Amount")));
+			Utils.parseDouble(record.get("Amount")),
+			SchwabOption.parse(record.get("Symbol")));
 		// @formatter:on
+	}
+
+	public boolean isOption()
+	{
+		return option != null;
+	}
+
+	public String getActualSymbol()
+	{
+		return isOption() ? option.symbol() : symbol;
 	}
 }

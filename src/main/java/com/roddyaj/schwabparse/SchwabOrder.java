@@ -16,7 +16,8 @@ public record SchwabOrder(
 	LocalDate timing,
 	LocalDateTime timeAndDate_ET,
 	String status,
-	int orderNumber)
+	int orderNumber,
+	SchwabOption option)
 {
 	private static final DateTimeFormatter TIME_AND_DATE_FORMAT = DateTimeFormatter.ofPattern("h:mm a MM/dd/yyyy");
 
@@ -33,8 +34,19 @@ public record SchwabOrder(
 			getTiming(record.get("Timing")),
 			LocalDateTime.parse(record.get("Time and Date (ET)"), TIME_AND_DATE_FORMAT),
 			record.get("Status"),
-			Utils.parseInt(record.get("Order Number")));
+			Utils.parseInt(record.get("Order Number")),
+			SchwabOption.parse(record.get("Symbol")));
 		// @formatter:on
+	}
+
+	public boolean isOption()
+	{
+		return option != null;
+	}
+
+	public String getActualSymbol()
+	{
+		return isOption() ? option.symbol() : symbol;
 	}
 
 	private static String getOrderType(String price)
