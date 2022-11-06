@@ -11,20 +11,7 @@ public class SchwabOrdersReader
 {
 	public SchwabOrdersData read(Path file)
 	{
-		List<SchwabOrder> orders;
-		try
-		{
-			// Correct the file contents to be valid CSV
-			List<String> lines = Files.lines(file).filter(line -> !line.isEmpty()).map(line -> line.replace("\" Shares", " Shares\"")
-				.replace("\" Share", " Share\"").replace("\" Contracts", " Contracts\"").replace("\" Contract", " Contract\"")).toList();
-
-			orders = Utils.readCsv(lines).stream().map(SchwabOrder::new).toList();
-		}
-		catch (IOException e)
-		{
-			orders = List.of();
-			e.printStackTrace();
-		}
+		List<SchwabOrder> orders = Utils.readCsv(file, 0).stream().map(SchwabOrder::new).toList();
 		return new SchwabOrdersData(getTime(file), orders);
 	}
 
