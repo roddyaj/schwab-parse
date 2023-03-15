@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,7 +15,8 @@ import java.util.stream.Collectors;
 public class SchwabPositionsReader
 {
 	private static final Pattern DATE_PATTERN = Pattern.compile("as of (.+?)\"");
-	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("hh:mm a v, MM/dd/yyy");
+	private static final DateTimeFormatter DATE_TIME_FORMAT_OLD = DateTimeFormatter.ofPattern("hh:mm a v, MM/dd/yyyy");
+	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("hh:mm a v, yyyy/MM/dd");
 
 	public SchwabPositionsData read(Path file)
 	{
@@ -38,7 +40,16 @@ public class SchwabPositionsReader
 
 			Matcher matcher = DATE_PATTERN.matcher(lines.get(0));
 			if (matcher.find())
-				time = ZonedDateTime.parse(matcher.group(1), DATE_TIME_FORMAT);
+			{
+				try
+				{
+					time = ZonedDateTime.parse(matcher.group(1), DATE_TIME_FORMAT_OLD);
+				}
+				catch (DateTimeParseException e)
+				{
+					time = ZonedDateTime.parse(matcher.group(1), DATE_TIME_FORMAT);
+				}
+			}
 		}
 		catch (IOException e)
 		{

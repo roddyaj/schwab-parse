@@ -80,6 +80,23 @@ final class Utils
 		return intValue;
 	}
 
+	public static Long parseLong(String value)
+	{
+		Long longValue = null;
+		if (isPresent(value))
+		{
+			try
+			{
+				longValue = Long.parseLong(sanitize(value));
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.println("parseLong " + e);
+			}
+		}
+		return longValue;
+	}
+
 	public static Double parseDouble(String value)
 	{
 		Double doubleValue = null;

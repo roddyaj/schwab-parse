@@ -14,7 +14,7 @@ public record SchwabOrder(
 	Double limitPrice,
 	LocalDateTime timeAndDate_ET,
 	String status,
-	int orderNumber,
+	long orderNumber,
 	SchwabOption option)
 {
 	private static final DateTimeFormatter TIME_AND_DATE_FORMAT = DateTimeFormatter.ofPattern("h:mm a MM/dd/yyyy");
@@ -31,7 +31,7 @@ public record SchwabOrder(
 			getLimitPrice(record.get("Price")),
 			LocalDateTime.parse(record.get("Time and Date(ET)"), TIME_AND_DATE_FORMAT),
 			record.get("Status"),
-			Utils.parseInt(record.get("Order Number")),
+			Utils.parseLong(record.get("Order Number")),
 			SchwabOption.parse(record.get("Symbol")));
 		// @formatter:on
 	}
